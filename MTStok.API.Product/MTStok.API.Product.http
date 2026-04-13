@@ -1,0 +1,6 @@
+@MTStok.API.Product_HostAddress = http://localhost:5268
+
+GET {{MTStok.API.Product_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
