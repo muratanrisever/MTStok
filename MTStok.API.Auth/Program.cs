@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
+using MTStok.Application.Interfaces;
 using MTStok.Domain.Entities;
+using MTStok.Infrastructure.Services;
 using MTStok.Persistence;
 using MTStok.Persistence.Seed;
 
@@ -11,10 +13,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
-// Eðer veriler bir þekilde silindiyse uygulama her baþladýðýnda çalýþýp, kullanýcý/rol yoksa ekleyecek blok
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -23,7 +25,6 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Seeder metodumuzu çaðýrýyoruz
         await DbSeeder.SeedAsync(userManager, roleManager);
     }
     catch (Exception ex)
