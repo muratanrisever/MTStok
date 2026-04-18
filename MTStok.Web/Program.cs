@@ -10,6 +10,11 @@ builder.Services.AddHttpClient<AuthService>(options =>
     options.BaseAddress = new Uri("https://localhost:7010/");
 });
 
+builder.Services.AddHttpClient<ProductWebService>(options =>
+{
+    options.BaseAddress = new Uri("https://localhost:7123/");
+});
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {

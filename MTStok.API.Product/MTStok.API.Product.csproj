@@ -13,10 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MTStok.Application\MTStok.Application.csproj" />
     <ProjectReference Include="..\MTStok.Infrastructure\MTStok.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\MTStok.Persistence\MTStok.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

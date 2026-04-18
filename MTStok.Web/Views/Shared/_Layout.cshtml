@@ -72,9 +72,14 @@
                     <span class="font-semibold text-sm">Dashboard</span>
                 </a>
 
-                <a asp-controller="Product" asp-action="Index" class="flex items-center gap-3 p-3.5 rounded-xl transition-all @(currentController == "Product" ? "nav-link-active" : "text-slate-400 hover:text-white hover:bg-slate-800/40")">
+                <a asp-controller="Products" asp-action="Index" class="flex items-center gap-3 p-3.5 rounded-xl transition-all @(currentController == "Product" ? "nav-link-active" : "text-slate-400 hover:text-white hover:bg-slate-800/40")">
                     <i data-lucide="box" class="w-5 h-5"></i>
                     <span class="font-semibold text-sm">Ürünler</span>
+                </a>
+
+                <a asp-controller="Category" asp-action="Index" class="flex items-center gap-3 p-3.5 rounded-xl transition-all @(currentController == "Category" ? "nav-link-active" : "text-slate-400 hover:text-white hover:bg-slate-800/40")">
+                    <i data-lucide="box" class="w-5 h-5"></i>
+                    <span class="font-semibold text-sm">Kategoriler</span>
                 </a>
 
                 @if (userRole == "SystemAdmin")

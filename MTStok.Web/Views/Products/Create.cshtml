@@ -1,0 +1,192 @@
+﻿@model MTStok.Application.DTOs.Products.ProductCreateUpdateDto
+
+<!-- YÜKLEME EKRANI (İşlem devam ederken görünür) -->
+<div id="loadingOverlay" class="hidden fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center animate-in fade-in duration-300">
+    <div class="text-center">
+        <div class="relative w-24 h-24 mx-auto mb-6">
+            <div class="absolute inset-0 border-4 border-indigo-500/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-t-indigo-500 rounded-full animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center text-indigo-400">
+                <i data-lucide="file-spreadsheet" class="w-8 h-8"></i>
+            </div>
+        </div>
+        <h3 class="text-xl font-bold text-white tracking-tight">Excel Verileri İşleniyor</h3>
+        <p class="text-slate-400 text-sm mt-2 italic">Lütfen bekleyin, ürünler sisteme aktarılıyor...</p>
+    </div>
+</div>
+
+<!-- BAŞARI MODALI (İşlem bittiğinde görünür) -->
+<div id="successModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center bg-slate-950/90 backdrop-blur-sm animate-in fade-in duration-300">
+    <div class="bg-slate-900 border border-slate-800 rounded-[2.5rem] p-10 max-w-sm w-full text-center shadow-2xl animate-in zoom-in-95 duration-500">
+        <div class="w-20 h-20 bg-emerald-500/20 rounded-3xl flex items-center justify-center text-emerald-500 mx-auto mb-6 shadow-lg shadow-emerald-500/10">
+            <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-2">Aktarım Tamamlandı!</h3>
+        <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+            Excel dosyasındaki ürünler başarıyla okundu ve veritabanına kaydedildi.
+        </p>
+        <button onclick="window.location.href='/Products/Index'" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-sm shadow-xl shadow-indigo-500/20 transition-all uppercase tracking-widest">
+            Tamam
+        </button>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+
+    <!-- Manuel Ekleme Alanı -->
+    <div class="lg:col-span-2">
+        <div class="bg-slate-900/40 border border-slate-800/50 rounded-3xl p-8 shadow-2xl">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 bg-indigo-600/20 rounded-2xl flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+                    <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Manuel Ürün Ekle</h3>
+                    <p class="text-xs text-slate-500 mt-1">Sisteme hızlıca tekil bir ürün tanımı yapın.</p>
+                </div>
+            </div>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-xs font-bold">
+                    <i data-lucide="alert-circle" class="w-4 h-4 inline-block mr-1"></i> @TempData["Error"]
+                </div>
+            }
+
+            <form asp-action="Create" asp-controller="Products" method="post" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Kategori Seçimi</label>
+                        <select asp-for="CategoryId" asp-items="ViewBag.Categories" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 text-white outline-none">
+                            <option value="">-- Lütfen Kategori Seçiniz --</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Ürün İsmi</label>
+                        <input asp-for="Name" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 text-white outline-none">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Ürün Kodu</label>
+                        <input asp-for="ProductCode" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 text-white font-mono outline-none">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Birim Fiyat (TL)</label>
+                        <input asp-for="Price" type="number" step="0.01" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 text-white outline-none">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Mevcut Stok</label>
+                        <input asp-for="StockQuantity" type="number" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 text-white outline-none">
+                    </div>
+                </div>
+                <div class="flex justify-end pt-4">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-3.5 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20 transition-all">
+                        Ürünü Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Excel İle Toplu Aktarım Alanı -->
+    <div class="lg:col-span-1">
+        <div class="bg-indigo-600/5 border border-indigo-500/20 rounded-3xl p-8 h-full flex flex-col">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 bg-emerald-600/20 rounded-2xl flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                    <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Toplu Aktarım</h3>
+                    <p class="text-xs text-slate-500 mt-1">Excel ile saniyeler içinde yükleyin.</p>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-slate-400 leading-relaxed mb-8">
+                Hatalı veri girişini önlemek için şablonu kullanın. Dosyayı doldurduktan sonra aşağıdaki alana sürüklemeniz yeterlidir.
+            </p>
+
+            <a asp-action="DownloadTemplate" asp-controller="Products" class="flex items-center justify-center gap-2 w-full py-3.5 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-[11px] font-bold text-slate-300 transition-all mb-8">
+                <i data-lucide="download-cloud" class="w-4 h-4 text-emerald-500"></i> Excel Şablonunu İndir
+            </a>
+
+            <!-- Sürükle Bırak Formu -->
+            <form id="excelForm" asp-action="UploadExcel" asp-controller="Products" method="post" enctype="multipart/form-data" class="flex-1 flex flex-col">
+                <div id="dropZone" class="border-2 border-dashed border-slate-800 rounded-2xl p-10 text-center hover:border-indigo-500/50 transition-all cursor-pointer group bg-slate-950/40 flex-1 flex flex-col items-center justify-center">
+                    <input type="file" name="excelFile" id="excelFileInput" class="hidden" accept=".xlsx">
+                    <i data-lucide="upload" class="w-10 h-10 text-slate-700 mb-4 group-hover:text-indigo-400 transition-colors"></i>
+                    <p class="text-[10px] font-bold text-slate-500 group-hover:text-slate-300 uppercase tracking-widest">Dosyayı Buraya Bırak</p>
+                    <p id="fileName" class="mt-3 text-[10px] text-indigo-400 font-mono hidden italic truncate max-w-full px-2"></p>
+                </div>
+
+                <button type="submit" id="submitExcel" class="hidden w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold mt-4 transition-all shadow-lg shadow-emerald-500/10 uppercase tracking-widest">
+                    Verileri Aktar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const zone = document.getElementById('dropZone');
+        const input = document.getElementById('excelFileInput');
+        const nameDisplay = document.getElementById('fileName');
+        const btn = document.getElementById('submitExcel');
+        const excelForm = document.getElementById('excelForm');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const successModal = document.getElementById('successModal');
+
+        zone.onclick = () => input.click();
+
+        input.onchange = (e) => {
+            if(e.target.files.length > 0) showFile(e.target.files[0].name);
+        };
+
+        zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('border-indigo-500', 'bg-indigo-500/5'); };
+        zone.ondragleave = () => zone.classList.remove('border-indigo-500', 'bg-indigo-500/5');
+        zone.ondrop = (e) => {
+            e.preventDefault();
+            zone.classList.remove('border-indigo-500', 'bg-indigo-500/5');
+            if(e.dataTransfer.files.length > 0) {
+                input.files = e.dataTransfer.files;
+                showFile(e.dataTransfer.files[0].name);
+            }
+        };
+
+        function showFile(name) {
+            nameDisplay.innerText = name;
+            nameDisplay.classList.remove('hidden');
+            btn.classList.remove('hidden');
+        }
+
+        // AJAX ILE EXCEL YUKLEME MANTIGI
+        excelForm.onsubmit = async (e) => {
+            e.preventDefault(); // Sayfa yönlenmesini durdur
+
+            loadingOverlay.classList.remove('hidden'); // Yükleme ekranını aç
+
+            const formData = new FormData(excelForm);
+
+            try {
+                const response = await fetch(excelForm.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // İşlem bittiğinde yükleme ekranını kapat
+                loadingOverlay.classList.add('hidden');
+
+                if (response.ok) {
+                    // Başarılı ise Onay Modalını aç
+                    successModal.classList.remove('hidden');
+                } else {
+                    alert('Aktarım sırasında bir hata oluştu. Lütfen Excel dosyasını kontrol edin.');
+                }
+            } catch (error) {
+                loadingOverlay.classList.add('hidden');
+                console.error('Hata:', error);
+                alert('Sunucuya bağlanırken bir hata oluştu.');
+            }
+        };
+    </script>
+}

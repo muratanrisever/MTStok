@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MTStok.Application\MTStok.Application.csproj" />
+    <ProjectReference Include="..\MTStok.Domain\MTStok.Domain.csproj" />
   </ItemGroup>
 
 </Project>

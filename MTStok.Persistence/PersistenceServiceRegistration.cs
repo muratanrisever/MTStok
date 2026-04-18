@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MTStok.Application.Interfaces;
 using MTStok.Domain.Entities;
 using MTStok.Persistence.Contexts;
+using MTStok.Persistence.Repositories;
 
 namespace MTStok.Persistence
 {
@@ -24,6 +26,8 @@ namespace MTStok.Persistence
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             return services;
         }
