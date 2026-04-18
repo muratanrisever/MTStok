@@ -1,67 +1,57 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using MTStok.Application.DTOs.Auth;
+using MTStok.Web.Services;
+using System.Security.Claims;
 
 namespace MTStok.Web.Controllers
 {
     public class AccountController : Controller
     {
-        [HttpGet]
-        public IActionResult Login()
+        private readonly AuthService _authService;
+
+        public AccountController(AuthService authService)
         {
-            return View();
+            _authService = authService;
         }
+
+        [HttpGet]
+        public IActionResult Login() => View();
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public async Task<IActionResult> Login(string email, string password)
         {
-            var inputEmail = email?.ToLower().Trim();
+            var loginDto = new LoginDto { EmailOrUserName = email, Password = password };
 
-            // --- SYSTEM ADMIN (MURAT) GİRİŞİ ---
-            // System Admin tüm yetkilere sahip "Root" kullanıcısıdır.
-            if ((inputEmail == "admin@mtstok.com" || inputEmail == "admin") && password == "Admin123!")
+            var tokenResult = await _authService.LoginAsync(loginDto);
+
+            if (tokenResult != null)
             {
-                // Kullanıcı kimlik bilgileri
-                TempData["UserName"] = "System Admin (Murat)";
-                TempData["UserRole"] = "SystemAdmin";
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, tokenResult.UserName),
+                    new Claim(ClaimTypes.Role, tokenResult.Role),
+                    new Claim("Token", tokenResult.AccessToken)
+                };
 
-                // Rol Ayarları: Admin her şeyi görebilir (Full Access)
-                // Bu liste ileride veritabanındaki yetki matrisinden gelecek.
-                var adminPermissions = new List<string> { "Dashboard", "Products", "Logs", "Users", "Roles", "Maintenance" };
-                TempData["Permissions"] = adminPermissions;
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity));
 
                 return RedirectToAction("Index", "Home");
             }
 
-            // --- USER (SUAD) GİRİŞİ ---
-            // Suad kısıtlı yetkiye sahip standart bir kullanıcıdır.
-            if ((inputEmail == "suad@mtstok.com" || inputEmail == "suad") && password == "Suad123!")
-            {
-                TempData["UserName"] = "Suad";
-                TempData["UserRole"] = "User";
-
-                // Rol Ayarları: Suad sadece temel ekranları görebilir.
-                var userPermissions = new List<string> { "Dashboard", "Products" };
-                TempData["Permissions"] = userPermissions;
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            // Hata Durumu
-            ModelState.AddModelError("", "E-posta veya şifre geçersiz. Lütfen tekrar deneyin.");
+            // Hata
+            ModelState.AddModelError("", "E-posta veya şifre hatalı!");
             return View();
         }
 
-        // Oturumu kapatır ve tüm yetki verilerini temizler
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            TempData.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
-
-        /* SENIOR NOTU: 
-           Burada 'TempData' kullanarak yetkileri (Permissions) dizi olarak saklıyoruz. 
-           Layout tarafında "@if (TempData.Peek("Permissions") is List<string> p && p.Contains("Logs"))" 
-           şeklinde bir kontrol yaparak ekranların görünürlüğünü dinamik olarak yönetebilirsin.
-        */
     }
 }
