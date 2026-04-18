@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MTStok.Application\MTStok.Application.csproj" />
+    <ProjectReference Include="..\MTStok.Domain\MTStok.Domain.csproj" />
     <ProjectReference Include="..\MTStok.Infrastructure\MTStok.Infrastructure.csproj" />
+    <ProjectReference Include="..\MTStok.Persistence\MTStok.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
