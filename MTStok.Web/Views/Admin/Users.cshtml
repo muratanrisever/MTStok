@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+}
+
+<div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h3 class="text-3xl font-bold text-white tracking-tight">Kullanıcı Yönetimi</h3>
+            <p class="text-slate-400 mt-1 font-medium italic">Sistem adminleri için kullanıcı ekleme, silme ve düzenleme paneli.</p>
+        </div>
+        <button class="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-cyan-500/20 active:scale-95">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            Yeni Kullanıcı Ekle
+        </button>
+    </div>
+
+    <div class="bg-slate-900/40 border border-slate-800/50 rounded-3xl overflow-hidden shadow-2xl">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-900/60 border-b border-slate-800 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                    <th class="p-6">Kullanıcı</th>
+                    <th class="p-6">E-Posta</th>
+                    <th class="p-6">Atanan Rol</th>
+                    <th class="p-6">Durum</th>
+                    <th class="p-6 text-right">Eylemler</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                <!-- System Admin -->
+                <tr class="hover:bg-cyan-500/5 transition-colors group">
+                    <td class="p-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-tr from-cyan-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">MT</div>
+                            <span class="text-sm font-bold text-white">Murat Tanrısever</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-sm">murat@mtstok.com</td>
+                    <td class="p-6">
+                        <span class="text-[10px] font-bold px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">System Admin</span>
+                    </td>
+                    <td class="p-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                            <span class="text-xs text-emerald-500 font-bold uppercase">Aktif</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-right text-slate-500">
+                        <i data-lucide="shield-check" class="w-4 h-4 inline opacity-50"></i>
+                    </td>
+                </tr>
+
+                <!-- Test User: Suad -->
+                <tr class="hover:bg-slate-800/40 transition-colors group">
+                    <td class="p-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 font-bold border border-slate-700/50 group-hover:border-indigo-500/30 transition-all">S</div>
+                            <span class="text-sm font-bold text-white">Suad</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-sm">suad@mtstok.com</td>
+                    <td class="p-6">
+                        <span class="text-[10px] font-bold px-2 py-1 rounded bg-slate-800 text-slate-500 border border-slate-700/50 uppercase tracking-tight">User</span>
+                    </td>
+                    <td class="p-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                            <span class="text-xs text-emerald-500 font-bold uppercase">Aktif</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <button class="text-slate-500 hover:text-white transition-colors p-2 hover:bg-slate-800 rounded-lg"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button class="text-slate-500 hover:text-rose-500 transition-colors p-2 hover:bg-rose-500/10 rounded-lg"><i data-lucide="user-minus" class="w-4 h-4"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

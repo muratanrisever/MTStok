@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Rol & Yetki Yönetimi";
+}
+
+<div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h3 class="text-3xl font-bold text-white tracking-tight">Yetki Matrisi</h3>
+            <p class="text-slate-400 mt-1 font-medium italic">Hangi rolün hangi modüle erişebileceğini System Admin olarak buradan belirleyin.</p>
+        </div>
+        <div class="flex gap-3">
+            <button class="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2.5 rounded-xl font-bold transition-all border border-slate-700">
+                Varsayılana Dön
+            </button>
+            <button onclick="savePermissions()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                Değişiklikleri Kaydet
+            </button>
+        </div>
+    </div>
+
+    <!-- Yetki Matrisi Tablosu -->
+    <div class="bg-slate-900/40 border border-slate-800/50 rounded-3xl overflow-hidden shadow-2xl">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-900/60 border-b border-slate-800 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                    <th class="p-6 min-w-[200px]">Rol Adı</th>
+                    <th class="p-6 text-center">Dashboard</th>
+                    <th class="p-6 text-center">Ürünler</th>
+                    <th class="p-6 text-center">Loglar</th>
+                    <th class="p-6 text-center">Kullanıcılar</th>
+                    <th class="p-6 text-center">Roller</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                <!-- System Admin Row -->
+                <tr class="hover:bg-cyan-500/5 transition-colors group bg-cyan-500/5">
+                    <td class="p-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-cyan-500/20 rounded-lg flex items-center justify-center text-cyan-500">
+                                <i data-lucide="crown" class="w-4 h-4"></i>
+                            </div>
+                            <span class="text-sm font-bold text-white">System Admin</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-center"><input type="checkbox" checked disabled class="w-5 h-5 rounded border-slate-800 bg-slate-900 text-cyan-600 focus:ring-0 opacity-50"></td>
+                    <td class="p-6 text-center"><input type="checkbox" checked disabled class="w-5 h-5 rounded border-slate-800 bg-slate-900 text-cyan-600 focus:ring-0 opacity-50"></td>
+                    <td class="p-6 text-center"><input type="checkbox" checked disabled class="w-5 h-5 rounded border-slate-800 bg-slate-900 text-cyan-600 focus:ring-0 opacity-50"></td>
+                    <td class="p-6 text-center"><input type="checkbox" checked disabled class="w-5 h-5 rounded border-slate-800 bg-slate-900 text-cyan-600 focus:ring-0 opacity-50"></td>
+                    <td class="p-6 text-center"><input type="checkbox" checked disabled class="w-5 h-5 rounded border-slate-800 bg-slate-900 text-cyan-600 focus:ring-0 opacity-50"></td>
+                </tr>
+
+                <!-- Manager Row -->
+                <tr class="hover:bg-indigo-500/5 transition-colors group">
+                    <td class="p-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center text-indigo-500">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            </div>
+                            <span class="text-sm font-bold text-white">Manager</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-center"><input type="checkbox" checked class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" checked class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                </tr>
+
+                <!-- Operator Row -->
+                <tr class="hover:bg-slate-800/40 transition-colors group">
+                    <td class="p-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center text-slate-400">
+                                <i data-lucide="user" class="w-4 h-4"></i>
+                            </div>
+                            <span class="text-sm font-bold text-white">Operator</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-center"><input type="checkbox" checked class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" checked class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                    <td class="p-6 text-center"><input type="checkbox" class="permission-check w-5 h-5 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-indigo-500/20 cursor-pointer"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Info Toast (Simülasyon için) -->
+    <div id="saveToast" class="fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 transition-transform duration-500 z-[100]">
+        <i data-lucide="check-circle" class="w-6 h-6"></i>
+        <div class="font-bold">Yetki ayarları başarıyla kaydedildi!</div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function savePermissions() {
+            const toast = document.getElementById('saveToast');
+            toast.classList.remove('translate-y-24');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-24');
+            }, 3000);
+
+            // Backend'e gönderilecek veri simülasyonu
+            console.log("Seçili yetkiler API'ye gönderiliyor...");
+        }
+    </script>
+}

@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Sistem Bakımı";
+}
+
+<div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div class="mb-8">
+        <h3 class="text-3xl font-bold text-white tracking-tight">Sistem Duraklatma (Kill Switch)</h3>
+        <p class="text-slate-400 mt-1 font-medium italic">Bakım modunu yönetin ve kullanıcıların erişimini kısıtlayın.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Sistem Durumu Kontrolü -->
+        <div class="bg-slate-900/40 border border-slate-800/50 rounded-3xl p-8 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-500">
+                        <i data-lucide="power" class="w-6 h-6"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">Bakım Modu Aktif Et</h4>
+                </div>
+                <p class="text-sm text-slate-500 mb-8 leading-relaxed">
+                    Sistemi durdurduğunuzda, sağ tarafta muaf tutulmayan tüm roller (varsayılan olarak "User" rolü) anında bakım ekranına yönlendirilecektir.
+                </p>
+            </div>
+
+            <div class="flex items-center gap-4 p-6 bg-slate-950/50 rounded-2xl border border-slate-800">
+                <span class="text-sm font-bold text-slate-400 uppercase tracking-widest flex-1">Sistem Durumu: <span id="statusText" class="text-emerald-500">ONLINE</span></span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="maintenanceToggle" class="sr-only peer" onchange="onStatusChange(this)">
+                    <div class="w-14 h-7 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-rose-600 shadow-inner"></div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Muafiyet Listesi -->
+        <div class="bg-slate-900/40 border border-slate-800/50 rounded-3xl p-8">
+            <h4 class="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                <i data-lucide="user-check" class="text-cyan-500 w-5 h-5"></i>
+                Erişimi Devam Edecek Roller
+            </h4>
+
+            <div class="space-y-3">
+                <!-- System Admin: Her zaman muaf -->
+                <label class="flex items-center justify-between p-4 bg-slate-950/50 rounded-2xl border border-slate-800 opacity-60">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-cyan-500"></div>
+                        <span class="text-sm font-bold text-white">System Admin</span>
+                    </div>
+                    <i data-lucide="lock" class="w-4 h-4 text-slate-600"></i>
+                </label>
+
+                <!-- Manager: Opsiyonel -->
+                <label class="flex items-center justify-between p-4 bg-slate-950/50 rounded-2xl border border-slate-800 hover:border-indigo-500/30 transition-all cursor-pointer group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-slate-600 group-hover:bg-indigo-500 transition-colors"></div>
+                        <span class="text-sm font-bold text-slate-300">Manager</span>
+                    </div>
+                    <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-0">
+                </label>
+
+                <!-- User Role: Suad bu grupta -->
+                <label class="flex items-center justify-between p-4 bg-slate-950/50 rounded-2xl border border-slate-800 hover:border-indigo-500/30 transition-all cursor-pointer group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-slate-600 group-hover:bg-indigo-500 transition-colors"></div>
+                        <span class="text-sm font-bold text-slate-300 italic text-rose-400">User (Suad)</span>
+                    </div>
+                    <input type="checkbox" class="w-5 h-5 rounded border-slate-700 bg-slate-900 text-indigo-600 focus:ring-0">
+                </label>
+            </div>
+
+            <button class="w-full mt-6 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-500/20 active:scale-[0.98] flex items-center justify-center gap-2">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                Yapılandırmayı Kaydet
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function onStatusChange(el) {
+        const text = document.getElementById('statusText');
+        if(el.checked) {
+            text.innerText = "SİSTEM BAKIMDA";
+            text.classList.replace('text-emerald-500', 'text-rose-500');
+        } else {
+            text.innerText = "SİSTEM ONLINE";
+            text.classList.replace('text-rose-500', 'text-emerald-500');
+        }
+    }
+</script>

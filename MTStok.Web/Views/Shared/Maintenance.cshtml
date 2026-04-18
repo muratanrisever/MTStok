@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Bakımda - MTStok</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+        }
+    </style>
+</head>
+<body class="text-slate-200 h-screen flex items-center justify-center p-6 overflow-hidden relative">
+
+    <div class="absolute inset-0 -z-10">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse"></div>
+    </div>
+
+    <div class="text-center max-w-2xl animate-in fade-in zoom-in duration-700">
+        <div class="w-24 h-24 bg-indigo-600/10 rounded-3xl flex items-center justify-center text-indigo-500 mx-auto mb-10 shadow-2xl border border-indigo-500/20">
+            <i data-lucide="hammer" class="w-12 h-12"></i>
+        </div>
+
+        <h1 class="text-5xl font-extrabold text-white tracking-tighter mb-6">Şu An Bakımdayız</h1>
+        <p class="text-lg text-slate-400 leading-relaxed mb-10">
+            MTStok altyapısında planlı bir iyileştirme yapıyoruz.
+            Daha hızlı ve güvenli bir deneyim için kısa bir süreliğine erişimi durdurduk.
+            Anlayışınız için teşekkür ederiz.
+        </p>
+
+        <div class="inline-flex items-center gap-3 px-6 py-3 bg-slate-900/50 border border-slate-800 rounded-2xl text-slate-500 font-mono text-sm">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+            <span>Tahmini Bitiş: 20:30 (TSİ)</span>
+        </div>
+
+        <div class="mt-12 pt-12 border-t border-slate-800/50 flex justify-center gap-8">
+            <div class="text-center">
+                <p class="text-white font-bold text-xl font-mono">1.2M</p>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">İşlenen Veri</p>
+            </div>
+            <div class="w-px h-10 bg-slate-800"></div>
+            <div class="text-center">
+                <p class="text-white font-bold text-xl font-mono">99.9%</p>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Uptime Hedefi</p>
+            </div>
+        </div>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

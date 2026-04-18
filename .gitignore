@@ -95,7 +95,6 @@ StyleCopReport.xml
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
-*.log
 *.tlog
 *.vspscc
 *.vssscc
@@ -262,7 +261,6 @@ Generated_Code/
 # because we have git ;-)
 _UpgradeReport_Files/
 Backup*/
-UpgradeLog*.XML
 UpgradeLog*.htm
 ServiceFabricBackup/
 *.rptproj.bak
@@ -482,3 +480,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# !MTStok.API.Log/

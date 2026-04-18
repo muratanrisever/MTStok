@@ -1,0 +1,138 @@
+﻿@{
+    var userName = TempData.Peek("UserName")?.ToString() ?? "Kullanıcı";
+    var userRole = TempData.Peek("UserRole")?.ToString() ?? "User";
+    ViewData["Title"] = "Dashboard";
+    ViewData["PageHeader"] = userRole == "SystemAdmin" ? "Sistem Yönetim Paneli" : "Kullanıcı Paneli";
+}
+
+<div class="animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <!-- Karşılama Bölümü -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+        <div>
+            <h3 class="text-3xl font-bold text-white tracking-tight">Hoş geldin, @userName 👋</h3>
+            <p class="text-slate-400 mt-1 font-medium italic">
+                @(userRole == "SystemAdmin" ? "Sistem tüm modülleriyle emrine amade." : "Stok verilerini ve ürünleri aşağıdan takip edebilirsin.")
+            </p>
+        </div>
+
+        @if (userRole == "SystemAdmin")
+        {
+            <div class="flex items-center gap-3">
+                <button onclick="toggleModal('excelModal')" class="bg-slate-900 border border-slate-800 text-slate-300 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-800 transition-all flex items-center gap-2">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-500"></i> Toplu Yükle
+                </button>
+                <button onclick="toggleModal('quickAddModal')" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Hızlı Ekle
+                </button>
+            </div>
+        }
+    </div>
+
+    <!-- İstatistik Kartları (Tüm Özellikler Geri Geldi) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div class="bg-slate-900/40 border border-slate-800/50 p-6 rounded-3xl relative overflow-hidden group hover:border-indigo-500/50 transition-all text-slate-200">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-indigo-600/10 rounded-2xl text-indigo-400"><i data-lucide="package"></i></div>
+                <div class="text-emerald-500 text-[10px] font-bold bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20">+12%</div>
+            </div>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Stoktaki Ürünler</p>
+            <p class="text-3xl font-bold text-white mt-1">12,840</p>
+        </div>
+
+        <div class="bg-slate-900/40 border border-slate-800/50 p-6 rounded-3xl group hover:border-cyan-500/50 transition-all text-slate-200">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-cyan-600/10 rounded-2xl text-cyan-400"><i data-lucide="shopping-cart"></i></div>
+                <div class="text-indigo-400 text-[10px] font-bold bg-indigo-500/10 px-2 py-1 rounded-lg border border-indigo-500/20">Stabil</div>
+            </div>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Bekleyen Sipariş</p>
+            <p class="text-3xl font-bold text-white mt-1">45</p>
+        </div>
+
+        <div class="bg-slate-900/40 border border-slate-800/50 p-6 rounded-3xl group hover:border-amber-500/50 transition-all text-slate-200">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-amber-600/10 rounded-2xl text-amber-400"><i data-lucide="alert-triangle"></i></div>
+                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">Kritik</span>
+            </div>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Kritik Stok</p>
+            <p class="text-3xl font-bold text-white mt-1">14</p>
+        </div>
+
+        <div class="bg-slate-900/40 border border-slate-800/50 p-6 rounded-3xl group hover:border-rose-500/50 transition-all text-slate-200">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-3 bg-rose-600/10 rounded-2xl text-rose-400"><i data-lucide="activity"></i></div>
+            </div>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Sistem Sağlığı</p>
+            <p class="text-3xl font-bold text-white mt-1">99.9%</p>
+        </div>
+    </div>
+
+    <!-- Alt Panel: Tablo ve Servisler -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-[#0f172a]/30 border border-slate-800/50 rounded-3xl p-6 overflow-hidden">
+            <div class="flex items-center justify-between mb-6 px-2">
+                <h4 class="text-lg font-bold text-white flex items-center gap-3">
+                    <i data-lucide="layers" class="text-indigo-500 w-5 h-5"></i>
+                    Son Hareketler
+                </h4>
+                <a href="#" class="text-xs font-bold text-indigo-400 hover:text-indigo-300">Tümünü Gör</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="text-slate-500 border-b border-slate-800/50 uppercase text-[10px] font-bold tracking-widest">
+                            <th class="pb-4 px-2">Ürün</th>
+                            <th class="pb-4">İşlem</th>
+                            <th class="pb-4">Miktar</th>
+                            <th class="pb-4">Zaman</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/30 text-slate-300">
+                        <tr class="hover:bg-indigo-500/5 transition-colors group">
+                            <td class="py-4 px-2 font-semibold text-white">Nvidia RTX 4090</td>
+                            <td class="py-4 text-emerald-500 font-bold italic">Giriş</td>
+                            <td class="py-4 text-slate-300 font-mono">+12 Adet</td>
+                            <td class="py-4 text-slate-500 text-xs">10:45</td>
+                        </tr>
+                        <tr class="hover:bg-indigo-500/5 transition-colors group">
+                            <td class="py-4 px-2 font-semibold text-white">Intel i9-14900K</td>
+                            <td class="py-4 text-rose-500 font-bold italic">Çıkış</td>
+                            <td class="py-4 text-slate-300 font-mono">-2 Adet</td>
+                            <td class="py-4 text-slate-500 text-xs">09:12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-[#0f172a]/30 border border-slate-800/50 rounded-3xl p-6">
+            <h4 class="text-lg font-bold text-white mb-8 flex items-center gap-3">
+                <i data-lucide="shield-check" class="text-indigo-500 w-5 h-5"></i>
+                Servis Durumları
+            </h4>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center p-3 bg-slate-950/40 rounded-xl border border-slate-800/50">
+                    <span class="text-sm text-slate-400 font-medium">Auth Service</span>
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-slate-950/40 rounded-xl border border-slate-800/50">
+                    <span class="text-sm text-slate-400 font-medium">Product Service</span>
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-slate-950/40 rounded-xl border border-slate-800/50">
+                    <span class="text-sm text-slate-400 font-medium">Gateway</span>
+                    <div class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(79,70,229,0.5)]"></div>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-800/50">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs text-slate-500 font-bold">UPTIME (7 GÜN)</span>
+                    <span class="text-white font-bold text-xs">99.98%</span>
+                </div>
+                <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-indigo-500 h-full w-[99%] shadow-[0_0_8px_rgba(79,70,229,0.5)]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
